@@ -53,6 +53,23 @@ const config = {
 
   };
 
+  export const convertCollectionsSnapshopToMap = (collections) => {
+      const transformedCollection = collections.docs.map(doc=>{
+          const {title, items} = doc.data();
+
+          return{
+              routeName: encodeURI(title.toLowerCase()),
+              id: doc.id,
+              title,
+              items
+          }
+      })
+      return transformedCollection.reduce((accumultator, collection) => {
+          accumultator[collection.title.toLowerCase()] = collection;
+          return accumultator;
+      }, {});
+  }
+
   firebase.initializeApp(config);
 
   export const auth = firebase.auth();
